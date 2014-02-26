@@ -1,4 +1,4 @@
-TeamFuture
-==========
+Cat Signal, for Firefox
+========================
 
-Help save the internet, with Team Future!
+Make sure the internet never loses. Ever.
