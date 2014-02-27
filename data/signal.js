@@ -18,8 +18,8 @@ $('body').append($notification);
 
 // Animate in.
 $notification.children().animate({
-    top: '0px'
-});
+    opacity: 1
+}, 100);
 
 // Animate spotlight.
 var spotlightAnimation = setInterval(animateSpotlight, 3210);
@@ -51,8 +51,10 @@ $('#team-future-signal #x').on('click', function(e) {
 self.port.on('destroy', destroy);
 
 function destroy(duration) {
+    console.log($notification.children().height()); // TODO: Remove this debug code.
+
     $notification.children().animate({
-        top: '-200px'
+        opacity: 0
     }, duration || 0, function() {
         $notification.remove();
     });
