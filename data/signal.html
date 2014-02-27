@@ -2,26 +2,52 @@
 <style type="text/css">
     #team-future-signal {
         background: black;
+        background-image: url($background);
+        border-bottom: 1px solid #223;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.5);
         cursor: pointer;
-        height: 32px;
         left: 0;
         overflow: hidden;
         position: fixed;
-        top: -32px;
+        top: -200px;
+        transition: all 3s ease 0s;
         width: 100%;
         z-index: 999;
     }
+    #team-future-signal.tilted {
+        background-position: 2% 3%;
+    }
     #team-future-signal #image {
         height: 32px;
-        padding-left: 12px;
+        margin-top: 4px;
+        transition: all 3s ease 0s;
     }
-    #team-future-signal #copy {
+    #team-future-signal.tilted #image {
+        transform: rotate(2deg) translate(0, 5px);
+    }
+    #team-future-signal #title {
         color: white;
-        font-family: sans-serif;
-        font-size: 14px;
-        left: 60px;
-        line-height: 32px;
-        position: absolute;
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    #team-future-signal #description {
+        color: #eee;
+        font-size: 12px;
+        line-height: 16px;
+        text-align: justify;
+    }
+    #team-future-signal #description #cta {
+        color: #ffbb00;
+        display: block;
+        font-weight: bold;
+        margin-top: 8px;
+        text-align: right;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+    #team-future-signal:hover #description #cta {
+        color: #ffd735;
     }
     #team-future-signal #x {
         color: white;
@@ -30,11 +56,34 @@
         font-weight: bold;
         line-height: 32px;
         padding-right: 24px;
+        margin-top: 4px;
+        opacity: 0.6;
+        transition: color 0.3s;
+    }
+    #team-future-signal #x:hover {
+        color: #f30;
+    }
+    #team-future-signal .text {
+        color: white;
+        float: left;
+        font-family: sans-serif;
+        margin-bottom: 26px;
+        margin-left: 64px;
+        margin-right: 64px;
     }
 </style>
 
-<div id="copy">$title</div>
-<div id="x">x</div>
 <img id="image" src="$image">
+<div id="x">x</div>
+
+<div class="text">
+<div id="title">$title</div>
+<div id="description">
+    In celebration of the win against SOPA and PIPA two years ago, and in memory of one of its leaders, Aaron Swartz, we are planning a day of protest against mass surveillance, to take place this February 11th.
+
+    <a id="cta" href="$link">Help save the internet &raquo;</a>
+</div>
+</div>
+
 
 </div>
