@@ -22,9 +22,6 @@ $notification.children().animate({
 });
 
 // Animate spotlight.
-if (window.spotlightAnimation) {
-    clearInterval(spotlightAnimation);
-}
 var spotlightAnimation = setInterval(animateSpotlight, 3210);
 function animateSpotlight() {
     $('#team-future-signal').toggleClass('tilted');
