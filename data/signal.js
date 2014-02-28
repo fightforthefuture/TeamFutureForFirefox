@@ -1,20 +1,33 @@
-// Remove existing notification.
+(function() { // :)
+
+
+
+// Shortcuts.
+var campaign = self.options.campaign;
+
+// Ignore pages that have the Cat Signal.
 var $notification = $('#team-future-signal');
-if ($notification) {
-    $notification.parent().remove();
+if ($notification.length) {
+    return;
 }
 
-// Update template values.
-var html = self.options.html;
-html = html.replace('$background', self.options.background);
-html = html.replace('$image', self.options.image);
-html = html.replace('$link', self.options.campaign.url);
-html = html.replace('$title', self.options.campaign.name);
+// Ignore pages without a body.
+if (!$('body').length) {
+    return;
+}
 
-// Create notification.
+// Create element.
 var $notification = $('<div>');
-$notification.html(html);
+$notification.html(self.options.html);
 $('body').append($notification);
+
+// Templating.
+$('#team-future-signal').css('background-image', 'url('+self.options.background+')');
+$('#image').attr('src', self.options.image);
+$('#link').attr('href', campaign.url);
+$('#link').text(campaign.url_title || 'Save the internet');
+$('#title').text(campaign.name);
+$('#description span').text(campaign.description);
 
 // Animate in.
 $notification.children().animate({
@@ -31,7 +44,7 @@ animateSpotlight();
 
 // Event listeners.
 $('#team-future-signal').on('click', function(e) {
-    window.open(self.options.campaign.url);
+    window.open(campaign.url);
     
     destroy(300);
     
@@ -51,8 +64,6 @@ $('#team-future-signal #x').on('click', function(e) {
 self.port.on('destroy', destroy);
 
 function destroy(duration) {
-    console.log($notification.children().height()); // TODO: Remove this debug code.
-
     $notification.children().animate({
         opacity: 0
     }, duration || 0, function() {
@@ -61,3 +72,7 @@ function destroy(duration) {
 
     clearInterval(spotlightAnimation);
 }
+
+
+
+}()); // :)
