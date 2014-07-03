@@ -4,6 +4,8 @@
 
 // Shortcuts.
 var campaign = self.options.campaign;
+var port = self.port;
+var spotlightAnimation = null;
 
 // Ignore pages that have the Cat Signal.
 var $notification = $('#team-future-signal');
@@ -19,50 +21,59 @@ if (!$('body').length) {
 // Create element.
 var $notification = $('<div>');
 $notification.html(self.options.html);
-$('body').append($notification);
 
-// Templating.
-$('#team-future-signal').css('background-image', 'url(' + self.options.imagePrefix + campaign.image + ')');
-$('#image').attr('src', self.options.image);
-$('#link').attr('href', campaign.url);
-$('#link').text(campaign.url_title || 'Save the internet');
-$('#title').text(campaign.name);
-$('#description span').text(campaign.description);
+// Animate in, when ready.
+function animateIn() {
+    $notification.find('#team-future-signal').css('background-image', 'url(' + backgroundUrl + ')');
+    $notification.find('#image').attr('src', self.options.image);
+    $notification.find('#link').attr('href', campaign.url);
+    $notification.find('#link').text(campaign.url_title || 'Save the internet');
+    $notification.find('#title').text(campaign.name);
+    $notification.find('#description span').text(campaign.description);
 
-// Animate in.
-$notification.children().animate({
-    opacity: 1
-}, 100);
 
-// Animate spotlight.
-var spotlightAnimation = setInterval(animateSpotlight, 3210);
-function animateSpotlight() {
-    $('#team-future-signal').toggleClass('tilted');
+    // Animate spotlight.
+    spotlightAnimation = setInterval(animateSpotlight, 3210);
+    function animateSpotlight() {
+        $notification.find('#team-future-signal').toggleClass('tilted');
+    }
+    animateSpotlight();
+
+
+    // Event listeners.
+    $notification.find('#team-future-signal').on('click', function(e) {
+        e.preventDefault();
+
+        window.open(campaign.url);
+
+        port.emit('clicked');
+
+        destroy(300);
+    });
+
+    $notification.find('#team-future-signal #x').on('click', function(e) {
+        e.stopPropagation();
+
+        port.emit('clicked');
+
+        destroy(100);
+    });
+
+    $('body').append($notification);
+
+    // Animate in.
+    $notification.children().animate({
+        opacity: 1
+    }, 300);
 }
-animateSpotlight();
 
+// Background URL.
+var backgroundUrl = self.options.imagePrefix + campaign.image;
+var img = new Image();
+img.src = backgroundUrl;
+img.onload = animateIn;
 
-// Event listeners.
-$('#team-future-signal').on('click', function(e) {
-    window.open(campaign.url);
-
-    destroy(300);
-
-    self.port.emit('clicked');
-
-    e.preventDefault();
-});
-
-$('#team-future-signal #x').on('click', function(e) {
-    destroy(100);
-
-    self.port.emit('clicked');
-    self.port.emit('closed');
-
-    e.stopPropagation();
-});
-
-self.port.on('destroy', destroy);
+port.on('destroy', destroy);
 
 function destroy(duration) {
     $notification.children().animate({
