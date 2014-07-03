@@ -1,4 +1,2 @@
-Cat Signal, for Firefox
-========================
-
-Make sure the internet never loses. Ever.
+### Team Future, for Firefox
+### [Install here](https://github.com/fightforthefuture/TeamFutureForFirefox/raw/master/catsignal.xpi)
