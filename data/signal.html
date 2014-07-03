@@ -3,7 +3,9 @@
     #team-future-signal {
         background: black;
         background-image: url($);
+        background-size: cover;
         border-bottom: 1px solid #223;
+        bottom: 0;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
         cursor: pointer;
         font-family: sans-serif;
@@ -14,47 +16,47 @@
         overflow: hidden;
         position: fixed;
         text-align: left;
-        top: 0;
         transition: all 3s ease 0s;
         width: 100%;
-        z-index: 999999;
-    }
-    #team-future-signal.tilted {
-        background-position: 2% 3%;
+        z-index: 9999999999;
     }
     #team-future-signal #image {
         height: 32px;
         float: left;
         margin-top: 4px;
         transition: all 3s ease 0s;
+        width: auto;
     }
     #team-future-signal.tilted #image {
-        transform: rotate(2deg) translate(0, 5px);
+        transform: rotate(3deg) translate(0, 15px);
     }
     #team-future-signal #title {
         color: white;
-        font-size: 15px;
+        font-size: 22px;
         line-height: 1;
         font-weight: bold;
-        margin-bottom: 8px;
+        margin-bottom: 18px;
     }
     #team-future-signal #description, #team-future-signal #description span {
         color: #eee;
-        font-size: 12px;
-        line-height: 16px;
+        font-size: 16px;
+        line-height: 20px;
         text-align: justify;
     }
     #team-future-signal #description #link {
         color: #ffbb00;
         display: block;
         font-weight: bold;
-        margin-top: 12px;
+        margin-top: 18px;
         text-align: right;
         text-decoration: none;
         transition: color 0.3s;
     }
     #team-future-signal:hover #description #link {
         color: #ffd735;
+    }
+    #team-future-signal:hover #description #link:hover {
+        color: #ffe847;
     }
     #team-future-signal #x {
         color: white;
@@ -77,6 +79,7 @@
         margin-left: 64px;
         margin-right: 64px;
         margin-top: 34px;
+        text-shadow: 1px 1px 7px black;
     }
     </style>
 

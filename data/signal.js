@@ -22,7 +22,7 @@ $notification.html(self.options.html);
 $('body').append($notification);
 
 // Templating.
-$('#team-future-signal').css('background-image', 'url('+self.options.background+')');
+$('#team-future-signal').css('background-image', 'url(' + self.options.imagePrefix + campaign.image + ')');
 $('#image').attr('src', self.options.image);
 $('#link').attr('href', campaign.url);
 $('#link').text(campaign.url_title || 'Save the internet');
@@ -45,9 +45,9 @@ animateSpotlight();
 // Event listeners.
 $('#team-future-signal').on('click', function(e) {
     window.open(campaign.url);
-    
+
     destroy(300);
-    
+
     self.port.emit('clicked');
 
     e.preventDefault();
@@ -57,6 +57,7 @@ $('#team-future-signal #x').on('click', function(e) {
     destroy(100);
 
     self.port.emit('clicked');
+    self.port.emit('closed');
 
     e.stopPropagation();
 });
