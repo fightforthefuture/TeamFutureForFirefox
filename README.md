@@ -10,6 +10,6 @@ Step 5 - Click the `Cat icon`, to see the notification again.
 ### How to QA
 Step 1 - Click the `Cat icon`.  
 Step 2 - Visit any website.  
-Step 3 - Please [note issues](https://github.com/fightforthefuture/TeamFutureForFirefox/issues/new) in GitHub. Including the URL and a short description helps a lot.  
+Step 3 - Please [note issues](https://github.com/fightforthefuture/TeamFutureForFirefox/issues/new) in GitHub, with the URL and a short description.  
 
 Repeat the process, if you have time. We really appreciate the help!  
