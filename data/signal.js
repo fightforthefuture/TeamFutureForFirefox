@@ -1,89 +1,120 @@
 (function() { // :)
 
 
+var Notification = {
+    m: {
+        campaign: self.options.campaign,
+        image: self.options.image,
+        imagePrefix: self.options.imagePrefix,
+        port: self.port,
+        template: self.options.html
+    },
+    v: {
+        $el: $('<div>'),
+        render: function(model) {
+            this.$el.html(model.template);
 
-// Shortcuts.
-var campaign = self.options.campaign;
-var port = self.port;
-var spotlightAnimation = null;
+            this.addDynamicValues(model);
+            this.addListeners(model);
+            this.animateSpotlight();
 
-// Ignore pages that have the Cat Signal.
-var $notification = $('#team-future-signal');
-if ($notification.length) {
-    return;
-}
+            // Append.
+            $('body').append(this.$el);
 
-// Ignore pages without a body.
-if (!$('body').length) {
-    return;
-}
+            // Animate in.
+            this.$el.children().animate({
+                opacity: 1
+            }, 300);
+        },
+        addDynamicValues: function(model) {
+            this.$el.find('#team-future-signal').css('background-image', 'url(' + model.backgroundUrl + ')');
+            this.$el.find('#image').attr('src', model.image);
+            this.$el.find('#link').attr('href', model.campaign.url);
+            this.$el.find('#link').text(model.campaign.url_title || 'Save the internet');
+            this.$el.find('#title').text(model.campaign.name);
+            this.$el.find('#description span').text(model.campaign.description);
+        },
+        addListeners: function(model) {
+            var self = this;
 
-// Create element.
-var $notification = $('<div>');
-$notification.html(self.options.html);
+            self.$el.find('#team-future-signal').on('click', function(e) {
+                e.preventDefault();
 
-// Animate in, when ready.
-function animateIn() {
-    $notification.find('#team-future-signal').css('background-image', 'url(' + backgroundUrl + ')');
-    $notification.find('#image').attr('src', self.options.image);
-    $notification.find('#link').attr('href', campaign.url);
-    $notification.find('#link').text(campaign.url_title || 'Save the internet');
-    $notification.find('#title').text(campaign.name);
-    $notification.find('#description span').text(campaign.description);
+                window.open(model.campaign.url);
 
+                Notification.m.port.emit('clicked');
 
-    // Animate spotlight.
-    spotlightAnimation = setInterval(animateSpotlight, 3210);
-    function animateSpotlight() {
-        $notification.find('#team-future-signal').toggleClass('tilted');
+                self.destroy(300);
+            });
+
+            self.$el.find('#team-future-signal #x').on('click', function(e) {
+                e.stopPropagation();
+
+                Notification.m.port.emit('clicked');
+
+                self.destroy(100);
+            });
+        },
+        spotlightInterval: 0,
+        animateSpotlight: function() {
+            var self = this;
+
+            function toggleSpotlight() {
+                self.$el.find('#team-future-signal').toggleClass('tilted');
+            }
+
+            toggleSpotlight();
+
+            self.spotlightInterval = setInterval(toggleSpotlight, 3210);
+        },
+        destroy: function(duration) {
+            var self = this;
+
+            self.$el.children().animate({
+                opacity: 0
+            }, duration || 0, function() {
+                self.$el.remove();
+            });
+
+            clearInterval(self.spotlightInterval);
+        }
+    },
+    c: {
+        init: function() {
+            if (this.reasonToBail()) {
+                return;
+            }
+
+            // Background URL.
+            Notification.m.backgroundUrl = Notification.m.imagePrefix + Notification.m.campaign.image;
+            var img = new Image();
+            img.src = Notification.m.backgroundUrl;
+            img.onload = function() {
+                Notification.v.render(Notification.m);
+            };
+
+            Notification.m.port.on('destroy', function() {
+                Notification.v.destroy();
+            });
+        },
+        reasonToBail: function() {
+            // If the page already has a notification.
+            if ($('#team-future-signal').length) {
+                return true;
+            }
+
+            // If the page doesn't have a body tag.
+            if (!$('body').length) {
+                return true;
+            }
+
+            return false;
+        }
     }
-    animateSpotlight();
+};
 
-
-    // Event listeners.
-    $notification.find('#team-future-signal').on('click', function(e) {
-        e.preventDefault();
-
-        window.open(campaign.url);
-
-        port.emit('clicked');
-
-        destroy(300);
-    });
-
-    $notification.find('#team-future-signal #x').on('click', function(e) {
-        e.stopPropagation();
-
-        port.emit('clicked');
-
-        destroy(100);
-    });
-
-    $('body').append($notification);
-
-    // Animate in.
-    $notification.children().animate({
-        opacity: 1
-    }, 300);
-}
-
-// Background URL.
-var backgroundUrl = self.options.imagePrefix + campaign.image;
-var img = new Image();
-img.src = backgroundUrl;
-img.onload = animateIn;
-
-port.on('destroy', destroy);
-
-function destroy(duration) {
-    $notification.children().animate({
-        opacity: 0
-    }, duration || 0, function() {
-        $notification.remove();
-    });
-
-    clearInterval(spotlightAnimation);
-}
+// Let's begin.
+Notification.c.init();
 
 
 
